@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      aap: ap-hw
+  template:
+    metadata:
+      labels:
+        aap: ap-hw
+    spec:
+      containers:
+      - name: helloworld
+        image: aamirpinger/helloworld
+       

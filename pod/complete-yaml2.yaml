@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: my-deployment-roll
+  annotations:
+    createBy: Bilal
+spec:
+  replicas: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      type: frontend 
+  template:
+    metadata:
+      labels:
+        type: frontend
+    spec:
+      containers:
+      - name: con1
+        image: aamirpinger/helloworld
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: vol-deploy
+          mountPath: /home/vol-test 
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 20
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 20
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 1
+      volumes:
+      - name: vol-deploy
+        emptyDir: {}
+   

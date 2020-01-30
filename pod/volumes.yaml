@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: volume-test
+spec:
+  containers:
+  - name: con1
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: vol-test
+      mountPath: /data
+  volumes:
+  - name: vol-test
+    emptyDir: {}

@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: pvc-replica
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      pv: pvc
+  template:
+    metadata:
+      labels:
+        pv: pvc
+    spec:
+      volumes:
+      - name: vol-pvc
+        persistentVolumeClaim:
+          claimName: pvc-test-2
+      containers:
+      - name: con1
+        image: aamirpinger/helloworld
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: vol-pvc
+          mountPath: /tmp
+

@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: test-readinessliveness
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      test: readiness
+      test: liveness
+  template:
+    metadata:
+      labels:
+        test: readiness
+        test: liveness
+    spec:
+      containers:
+      - name: con1
+        image: aamirpinger/helloworld
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          exec:
+            command:
+            - ls
+            - /
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+          initialDelaySeconds: 15
+        readinessProbe:
+          exec:
+            command:
+            - ls
+            - /
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          initialDelaySeconds: 15
+    

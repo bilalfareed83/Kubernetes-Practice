@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: my-deployment
+  namespace: axiom
+  labels:
+    type: frontend
+  annotations:
+    createBy: Bilal
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      type: frontend
+  template:
+    metadata:
+      namespace: axiom
+      labels:
+        type: frontend
+    spec:
+      containers:
+      - name: con1
+        image: aamirpinger/helloworld
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: vol-deploy
+          mountPath: /home/vol-test 
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 20
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 20
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 1
+      volumes:
+      - name: vol-deploy
+        persistentVolumeClaim:
+          claimName: deployment-pvc
+   

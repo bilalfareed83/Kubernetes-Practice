@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: vol-rs
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      vol: rs
+  template:
+    metadata:
+      labels:
+        vol: rs
+    spec:
+      volumes:
+      - name: vol-test-rs
+        emptyDir: {}
+      containers:
+      - name: con1
+        image: aamirpinger/helloworld
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: vol-test-rs
+          mountPath: /share
